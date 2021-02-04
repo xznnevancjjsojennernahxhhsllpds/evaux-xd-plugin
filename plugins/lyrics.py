@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from googlesearch import search
 from userge import Message, userge
+from userge.utils import post_to_telegraph 
 
 
 @userge.on_cmd(
@@ -47,12 +48,17 @@ async def glyrics(message: Message):
     else:
         writers = "UNKNOWN"
     lyr_format = ""
-    lyr_format += "**" + title[0] + "**\n"
-    lyr_format += "__" + lyrics + "__"
-    lyr_format += "\n\n**Written By: **" + "__" + writers + "__"
-    lyr_format += "\n**Source: **" + "`" + title[1] + "`"
+    lyr_format += "<b>" + title[0] + "</b>\n"
+    lyr_format += "<i>" + lyrics + "</i>"
+    lyr_format += "\n\n<b>Written By: </b>" + "<i>" + writers + "</i>"
+    lyr_format += "\n<b>Source: </b>" + "`" + title[1] + "`"
 
     if lyr_format:
-        await message.edit(lyr_format)
+        if len(lyr_format) <= 4096:
+            await message.edit(lyr_format)
+        else:
+            lyr_format = lyr_format.replace("\n", "<br>")
+            link = post_to_telegraph(title[0], lyr_format)
+            await message.edit(f"Posted the lyrics to telegraph...\n[Link](link)")
     else:
         await message.edit(f"No Lyrics Found for **{song}**")
