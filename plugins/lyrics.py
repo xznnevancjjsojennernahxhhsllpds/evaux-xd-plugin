@@ -59,6 +59,6 @@ async def glyrics(message: Message):
         else:
             lyr_format = lyr_format.replace("\n", "<br>")
             link = post_to_telegraph(title[0], lyr_format)
-            await message.edit(f"Posted the lyrics to telegraph...\n[Link](link)")
+            await message.edit(f"Posted the lyrics to telegraph...\n[Link]({link})")
     else:
         await message.edit(f"No Lyrics Found for **{song}**")
