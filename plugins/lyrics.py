@@ -22,7 +22,7 @@ async def glyrics(message: Message):
     if not song:
         await message.edit("Bruh WTF?")
         return
-    await message.edit(f"Searching Lyrics For **{song}**...")
+    await message.edit(f"Searching lyrics for **{song}**...")
     to_search = song + "genius lyrics"
     gen_surl = list(search(to_search, num=1, stop=1))[0]
     gen_page = requests.get(gen_surl)
