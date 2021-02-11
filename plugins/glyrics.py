@@ -24,6 +24,11 @@ async def lyrics(message: Message):
         return
     if GENIUS is None:
         await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...")
-        return False
+        return
     if "-" in song:
         artist, song = song.split("-", 1)
+    await message.edit(f"Searching lyrics for **{artist} - {song}** on Genius...`")
+    lyr = genius.search_song(song, artist)
+    if lyr is None:
+        await message.edit(f"Couldn't find `{artist} - {song}` on Genius...")
+        return
