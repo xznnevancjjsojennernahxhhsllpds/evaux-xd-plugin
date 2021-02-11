@@ -9,15 +9,15 @@ from userge.utils import post_to_telegraph
 
 
 @userge.on_cmd(
-    "glyrics",
+    "lyrics",
     about={
         "header": "Genius Lyrics",
         "description": "Scrape Song Lyrics from Genius.com",
-        "usage": "{tr}glyrics [Song Name]",
-        "examples": "{tr}glyrics Swalla Nicki Minaj",
+        "usage": "{tr}lyrics [Song Name]",
+        "examples": "{tr}lyrics Swalla Nicki Minaj",
     },
 )
-async def glyrics(message: Message):
+async def lyrics(message: Message):
     song = message.input_str
     if not song:
         await message.edit("Bruh WTF?")
