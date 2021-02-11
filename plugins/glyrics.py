@@ -2,11 +2,11 @@
 
 import lyricsgenius
 
-from userge import Message, userge
+from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
 
-if GENIUS is not None:
-    genius = lyricsgenius.Genius(GENIUS)
+if Config.GENIUS is not None:
+    genius = lyricsgenius.Genius(Config.GENIUS)
 
 
 @userge.on_cmd(
