@@ -45,7 +45,7 @@ async def lyrics(message: Message):
         )
         writers = target_node.text.strip()
     else:
-        writers = "Couldn't find..."
+        writers = "Couldn't find writers..."
     
     if "-" in song:
         artist, song = song.split("-", 1)
@@ -58,10 +58,10 @@ async def lyrics(message: Message):
         return
     lyric = lyr.lyrics
     title = f"{artist} - {song}"
-    lyrics = f"Lyrics for **{title}** by Genius..."
+    lyrics = f"Lyrics for {title} by Genius..."
     lyrics += f"\n\n{lyric}"
-    lyrics += f"\n\n**Written by: **`{writers}`"
-    lyrics += f"\n**Source: **`genius.com`"
+    lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
+    lyrics += f"\n<b>Source: </b><code>genius.com</code>"
     if len(lyrics) <= 4096:
         await message.edit(f"{lyrics}")
     else:
