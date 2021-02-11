@@ -58,8 +58,7 @@ async def lyrics(message: Message):
         return
     lyric = lyr.lyrics
     title = f"{artist} - {song}"
-    lyrics = f"Lyrics for {title} by Genius..."
-    lyrics += f"\n\n{lyric}"
+    lyrics = f"\n\n{lyric}"
     lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
     lyrics += f"\n<b>Source: </b><code>genius.com</code>"
     if len(lyrics) <= 4096:
