@@ -1,7 +1,9 @@
 # ported from oub-remix to USERGE-X by AshSTR/ashwinstr
 
 import lyricsgenius
+import requests
 
+from googlesearch import search
 from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
 
