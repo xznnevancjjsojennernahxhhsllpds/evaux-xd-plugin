@@ -27,7 +27,7 @@ async def lyrics(message: Message):
         await message.err("Search song lyrics without song name?")
         return
     if Config.GENIUS is None:
-        await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...")
+        await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
         return
     
     to_search = song + "genius lyrics"
@@ -62,9 +62,10 @@ async def lyrics(message: Message):
     lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
     lyrics += f"\n<b>Source: </b><code>genius.com</code>"
     lyrics = lyrics.replace("[", "<b>[")
-    lyrics = lyrics.replace("]", "]</b>") 
-    if len(lyrics) <= 4096:
-        await message.edit(f"{lyrics}")
+    lyrics = lyrics.replace("]", "]</b>")
+    lyr_msg = f"Lyrics for <b>{title}</b>...\n\n{lyrics}"
+    if len(lyr_msg) <= 4096:
+        await message.edit(f"{lyr_msg}")
     else:
         lyrics = lyrics.replace("\n", "<br>") 
         link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
