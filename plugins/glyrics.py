@@ -61,11 +61,11 @@ async def lyrics(message: Message):
     lyrics = f"\n\n{lyric}"
     lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
     lyrics += f"\n<b>Source: </b><code>genius.com</code>"
+    lyrics = lyrics.replace("[", "<b>[")
+    lyrics = lyrics.replace("]", "]</b>") 
     if len(lyrics) <= 4096:
         await message.edit(f"{lyrics}")
     else:
-        lyrics = lyrics.replace("\n", "<br>")
-        lyrics = lyrics.replace("[", "<b>[")
-        lyrics = lyrics.replace("]", "]</b>") 
+        lyrics = lyrics.replace("\n", "<br>") 
         link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
         await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})")
