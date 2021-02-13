@@ -24,7 +24,7 @@ if Config.GENIUS is not None:
 async def lyrics(message: Message):
     song = message.input_str or message.reply_to_message.text
     if not song:
-        await message.edit("Search song lyrics without song name?")
+        await message.err("Search song lyrics without song name?")
         return
     if Config.GENIUS is None:
         await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...")
