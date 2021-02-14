@@ -27,7 +27,7 @@ async def lyrics(message: Message):
         await message.err("Search song lyrics without song name?")
         return
     if Config.GENIUS is None:
-        await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
+        await message.err("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
         return
     
     to_search = song + "genius lyrics"
@@ -46,7 +46,8 @@ async def lyrics(message: Message):
         writers = target_node.text.strip()
     else:
         writers = "Couldn't find writers..."
-    
+
+    artist = ""
     if "-" in song:
         artist, song = song.split("-", 1)
         artist = artist.strip()
@@ -63,13 +64,15 @@ async def lyrics(message: Message):
             s = s.capitalize()
             song_s.append(s)
         song = " ".join(map(str, song_s))
-    await message.edit(f"Searching lyrics for **{artist} - {song}** on Genius...`")
+    title = f"{artist} - {song}"
+    if artist == "":
+        title = title.replace(" - ", "")
+    await message.edit(f"Searching lyrics for **{title}** on Genius...`")
     lyr = genius.search_song(song, artist)
     if lyr is None:
-        await message.edit(f"Couldn't find `{artist} - {song}` on Genius...")
+        await message.edit(f"Couldn't find `{title}` on Genius...")
         return
     lyric = lyr.lyrics
-    title = f"{artist} - {song}"
     lyrics = f"\n\n{lyric}"
     lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
     lyrics += f"\n<b>Source: </b><code>genius.com</code>"
