@@ -53,7 +53,7 @@ async def lyrics(message: Message):
         name_a = artist.split()
         artist_a = []
         for a in name_a:
-            a = a.capitlize()
+            a = a.capitalize()
             artist_a.append(a)
         artist = " ".join(map(str, artist_a))
         song = song.strip()
