@@ -50,7 +50,19 @@ async def lyrics(message: Message):
     if "-" in song:
         artist, song = song.split("-", 1)
         artist = artist.strip()
+        name_a = artist.split()
+        artist_a = []
+        for a in name_a:
+            a = a.capitlize()
+            artist_a.append(a)
+        artist = " ".join(map(str, artist_a))
         song = song.strip()
+        name_s = song.split()
+        song_s = []
+        for s in name_s:
+            s = s.capitalize()
+            song_s.append(s)
+        song = " ".join(map(str, song_s))
     await message.edit(f"Searching lyrics for **{artist} - {song}** on Genius...`")
     lyr = genius.search_song(song, artist)
     if lyr is None:
