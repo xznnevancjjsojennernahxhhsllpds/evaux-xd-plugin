@@ -57,13 +57,13 @@ async def lyrics(message: Message):
             a = a.capitalize()
             artist_a.append(a)
         artist = " ".join(map(str, artist_a))
-        song = song.strip()
-        name_s = song.split()
-        song_s = []
-        for s in name_s:
-            s = s.capitalize()
-            song_s.append(s)
-        song = " ".join(map(str, song_s))
+    song = song.strip()
+    name_s = song.split()
+    song_s = []
+    for s in name_s:
+        s = s.capitalize()
+        song_s.append(s)
+    song = " ".join(map(str, song_s)) 
     title = f"{artist} - {song}"
     if artist == "":
         title = title.replace(" - ", "")
