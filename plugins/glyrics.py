@@ -48,7 +48,7 @@ async def lyrics(message: Message):
         writers = "Couldn't find writers..."
 
     artist = ""
-    if "-" in song:
+    if " - " in song:
         artist, song = song.split("-", 1)
         artist = artist.strip()
         name_a = artist.split()
