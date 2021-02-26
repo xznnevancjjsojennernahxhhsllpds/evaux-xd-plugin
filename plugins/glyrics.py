@@ -51,12 +51,12 @@ async def lyrics(message: Message):
     if " - " in song:
         artist, song = song.split("-", 1)
         artist = artist.strip()
-        name_a = artist.split()
-        artist_a = []
-        for a in name_a:
-            a = a.capitalize()
-            artist_a.append(a)
-        artist = " ".join(map(str, artist_a))
+   #     name_a = artist.split()
+   #     artist_a = []
+   #     for a in name_a:
+   #         a = a.capitalize()
+   #         artist_a.append(a)
+   #     artist = " ".join(map(str, artist_a))
     song = song.strip()
     name_s = song.split()
     song_s = []
