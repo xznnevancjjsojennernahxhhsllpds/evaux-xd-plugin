@@ -1,12 +1,15 @@
 # ported from oub-remix to USERGE-X by AshSTR/ashwinstr
 
 import lyricsgenius
+import requests
 
-from userge import Message, userge
+from bs4 import BeautifulSoup
+from googlesearch import search
+from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
 
-if GENIUS is not None:
-    genius = lyricsgenius.Genius(GENIUS)
+if Config.GENIUS is not None:
+    genius = lyricsgenius.Genius(Config.GENIUS)
 
 
 @userge.on_cmd(
@@ -21,10 +24,10 @@ if GENIUS is not None:
 async def lyrics(message: Message):
     song = message.input_str or message.reply_to_message.text
     if not song:
-        await message.edit("Search song lyrics without song name?")
+        await message.err("Search song lyrics without song name?")
         return
-    if GENIUS is None:
-        await message.edit("Provide 'Genius access token' as `GENIUS` to config vars...")
+    if Config.GENIUS is None:
+        await message.err("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
         return
     
     to_search = song + "genius lyrics"
@@ -42,26 +45,43 @@ async def lyrics(message: Message):
         )
         writers = target_node.text.strip()
     else:
-        writers = "Couldn't find..."
-    
-    if "-" in song:
+        writers = "Couldn't find writers..."
+
+    artist = ""
+    if " - " in song:
         artist, song = song.split("-", 1)
         artist = artist.strip()
-        song = song.strip()
-    await message.edit(f"Searching lyrics for **{artist} - {song}** on Genius...`")
+   #     name_a = artist.split()
+   #     artist_a = []
+   #     for a in name_a:
+   #         a = a.capitalize()
+   #         artist_a.append(a)
+   #     artist = " ".join(map(str, artist_a))
+    song = song.strip()
+    name_s = song.split()
+    song_s = []
+    for s in name_s:
+        s = s.capitalize()
+        song_s.append(s)
+    song = " ".join(map(str, song_s)) 
+    title = f"{artist} - {song}"
+    if artist == "":
+        title = title.replace(" - ", "")
+    await message.edit(f"Searching lyrics for **{title}** on Genius...`")
     lyr = genius.search_song(song, artist)
     if lyr is None:
-        await message.edit(f"Couldn't find `{artist} - {song}` on Genius...")
+        await message.edit(f"Couldn't find `{title}` on Genius...")
         return
     lyric = lyr.lyrics
-    title = f"{artist} - {song}"
-    lyrics = f"Lyrics for **{title}** by Genius..."
-    lyrics += f"\n\n{lyric}"
-    lyrics += f"\n\n**Written by: **`{writers}`"
-    lyrics += f"\n**Source: **`genius.com`"
-    if len(lyrics) <= 4096:
-        await message.edit(f"{lyrics}")
+    lyrics = f"\n{lyric}"
+    lyrics += f"\n\n<b>Written by: </b><code>{writers}</code>"
+    lyrics += f"\n<b>Source: </b><code>genius.com</code>"
+    lyrics = lyrics.replace("[", "<b>[")
+    lyrics = lyrics.replace("]", "]</b>")
+    lyr_msg = f"Lyrics for <b>{title}</b>...\n\n{lyrics}"
+    if len(lyr_msg) <= 4096:
+        await message.edit(f"{lyr_msg}")
     else:
-        lyrics = lyrics.replace("\n", "<br>")
+        lyrics = lyrics.replace("\n", "<br>") 
         link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
         await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})")

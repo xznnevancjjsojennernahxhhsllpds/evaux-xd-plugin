@@ -28,7 +28,7 @@ option and for "Sites to search" option select "Search the entire
 
 
 @userge.on_cmd(
-    "gimg",
+    "g-img",
     about={
         "header": "Google Image Search",
         "description": "Search and Download Images from"
