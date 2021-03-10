@@ -8,6 +8,7 @@ glitch-this
 gtts
 humanize
 justwatch
+lyricsgenius>=3.0.0
 lottie
 qrcode
 spotdl
