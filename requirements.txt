@@ -1,9 +1,11 @@
+asyncurban
 cairosvg
 coffeehouse
 colour
 deezloader
 emoji-country-flag
 google
+google_trans_new
 glitch-this
 gtts
 humanize
@@ -17,5 +19,6 @@ validators
 geopy
 prettytable
 newspaper3k
+PyDictionary
 pydub
 pyfiglet
