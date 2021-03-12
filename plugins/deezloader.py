@@ -6,7 +6,7 @@ from pathlib import Path
 import deezloader  # pylint: disable=W0406
 from deezloader.exceptions import NoDataApi
 from userge import Message, pool, userge
-from userge.plugins.misc.upload import audio_upload, doc_upload
+from userge.plugins.misc.uploads import audio_upload, doc_upload
 
 Clogger = userge.getCLogger(__name__)
 ARL_TOKEN = os.environ.get("ARL_TOKEN", None)
