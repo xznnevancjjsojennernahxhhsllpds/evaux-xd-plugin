@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 
 from userge import Message, userge
-from userge.plugins.misc.upload import audio_upload
+from userge.plugins.misc.uploads import audio_upload
 from userge.plugins.tools.executor import Term
 
 TEMP_DIR = "spotdl/"
