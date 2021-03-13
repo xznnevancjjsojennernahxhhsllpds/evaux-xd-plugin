@@ -44,9 +44,9 @@ async def deezload(message: Message):
     if not os.path.exists(TEMP_PATH):
         os.makedirs(TEMP_PATH)
     if not message.flags:
-        await message.edit("Hello🙂, This Plugin requires a proper flag to be passed.")
+        await message.edit("Hello, this plugin requires a proper flag to be passed...")
         return
-    await message.edit("Checking your Token.")
+    await message.edit("Checking your token.")
     if ARL_TOKEN is None:
         await message.edit(ARL_HELP, disable_web_page_preview=True)
         return
@@ -61,7 +61,7 @@ async def deezload(message: Message):
     to_zip = "-zip" in flags
     d_quality = "MP3_320"
     if not message.filtered_input_str:
-        await message.edit("Olá Peru Master🙂, Tell me how to download `Nothing`")
+        await message.edit("Tell me how to download `nothing`...")
         return
     input_ = message.filtered_input_str
     if "-dsong" not in flags:
@@ -87,8 +87,23 @@ async def deezload(message: Message):
                 artist, song = input_.split("-")
                 quality = d_quality
             else:
-                await message.edit("🙂K!!")
+                await message.edit("Give [{artist name} - {song name}-{quality(optional)}]...")
                 return
+        artist = artist.strip()
+        artist_n = artist.split()
+        a = []
+        for a_name in artist_n:
+            a_name = a_name.capitalize()
+            a.append(a_name)
+        artist = " ".join(a)
+
+        song = song.strip()
+        song_n = song.split()
+        s = []
+        for s_name in song_n:
+            s_name = s_name.capitalize()
+            s.append(s_name)
+        song = " ".join(s)
     try:
         if (
             "-sdl" in flags
@@ -106,7 +121,7 @@ async def deezload(message: Message):
         await Clogger.log(f"#ERROR\n\n{e_r}")
 
     if "-dsong" in flags:
-        await message.edit(f"Searching Results for {song}")
+        await message.edit(f"Searching results for {artist} - {song}...")
         try:
             track = await pool.run_in_thread(loader.download_name)(
                 artist=artist.strip(),
@@ -117,10 +132,10 @@ async def deezload(message: Message):
                 recursive_download=True,
                 not_interface=True,
             )
-            await message.edit("Song found, Now Uploading 📤", del_in=5)
+            await message.edit("Song found, now uploading 📤...", del_in=5)
             await audio_upload(message=message, path=Path(track), del_path=True)
         except Exception as e_r:
-            await message.edit("Song not Found 🚫")
+            await message.edit("Song not nound 🚫...")
             await Clogger.log(f"#ERROR\n\n{e_r}")
 
     await message.delete()
