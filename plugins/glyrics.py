@@ -84,4 +84,4 @@ async def lyrics(message: Message):
     else:
         lyrics = lyrics.replace("\n", "<br>") 
         link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
-        await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})")
+        await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
