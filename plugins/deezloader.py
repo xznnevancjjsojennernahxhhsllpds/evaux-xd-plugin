@@ -121,7 +121,7 @@ async def deezload(message: Message):
         await Clogger.log(f"#ERROR\n\n{e_r}")
 
     if "-dsong" in flags:
-        await message.edit(f"Searching results for **{artist} - {song}**...")
+        await message.edit(f"Searching results for **{artist} - {song}**({quality})...")
         try:
             track = await pool.run_in_thread(loader.download_name)(
                 artist=artist.strip(),
