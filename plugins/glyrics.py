@@ -2,6 +2,7 @@
 
 import lyricsgenius
 import requests
+from pyrogram.errors import BadRequest
 
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -71,7 +72,7 @@ async def lyrics(message: Message):
     await message.edit(f"Searching lyrics for **{title}** on Genius...`")
     try:
         lyr = genius.search_song(song, artist)
-    except:
+    except BadRequest:
         headers = {
             'content-type': 'application/json',
         }
