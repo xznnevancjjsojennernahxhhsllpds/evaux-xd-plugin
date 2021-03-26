@@ -76,11 +76,13 @@ async def lyrics(message: Message):
             'content-type': 'application/json',
         }
         data = '{"searchTerm": "higher - eminem"}'
-        response = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
-        if len(response.text) <= 4096:
+        resp = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
+        resp = resp.text
+        resp = resp.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
+        if len(resp) <= 4096:
             await message.edit(response.text)
         else:
-            link = post_to_telegraph(f"Lyrics for {title}...", response.text)
+            link = post_to_telegraph(f"Lyrics for {title}...", resp)
             await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
         return
     if lyr is None:
