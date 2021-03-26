@@ -75,7 +75,7 @@ async def lyrics(message: Message):
         headers = {
             'content-type': 'application/json',
         }
-        data = '{"searchTerm": f"{song} - {artist}"}'
+        data = '{"searchTerm": "higher - eminem"}'
         response = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
         if len(response.text) <= 4096:
             await message.edit(response.text)
