@@ -72,7 +72,7 @@ async def lyrics(message: Message):
     await message.edit(f"Searching lyrics for **{title}** on Genius...`")
     try:
         lyr = genius.search_song(song, artist)
-    except forbidden_403:
+    except Exception:
         headers = {
             'content-type': 'application/json',
         }
