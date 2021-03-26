@@ -2,7 +2,7 @@
 
 import lyricsgenius
 import requests
-from pyrogram.errors import BadRequest
+from pyrogram.errors import Forbidden
 
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -72,7 +72,7 @@ async def lyrics(message: Message):
     await message.edit(f"Searching lyrics for **{title}** on Genius...`")
     try:
         lyr = genius.search_song(song, artist)
-    except BadRequest:
+    except Forbidden:
         headers = {
             'content-type': 'application/json',
         }
