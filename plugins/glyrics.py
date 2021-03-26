@@ -78,7 +78,7 @@ async def lyrics(message: Message):
         data = '{"searchTerm": "higher - eminem"}'
         resp = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
         resp = resp.text
-        resp = resp.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
+#        resp = resp.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
         if len(resp) <= 4096:
             await message.edit(response.text)
         else:
