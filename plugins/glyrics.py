@@ -69,7 +69,20 @@ async def lyrics(message: Message):
     else:
         title = f"{artist} - {song}"
     await message.edit(f"Searching lyrics for **{title}** on Genius...`")
-    lyr = genius.search_song(song, artist)
+    try:
+        lyr = genius.search_song(song, artist)
+    except:
+        headers = {
+            'content-type': 'application/json',
+        }
+        data = '{"searchTerm": f"{song} - {artist}"}'
+        response = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
+        if len(response.text) <= 4096:
+            await message.edit(response.text)
+        else:
+            link = post_to_telegraph(f"Lyrics for {title}...", response.text)
+            await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
+        return
     if lyr is None:
         await message.edit(f"Couldn't find `{title}` on Genius...")
         return
