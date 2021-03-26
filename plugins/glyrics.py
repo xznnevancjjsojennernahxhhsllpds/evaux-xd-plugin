@@ -2,7 +2,6 @@
 
 import lyricsgenius
 import requests
-from pyrogram.errors import forbidden_403
 
 from bs4 import BeautifulSoup
 from googlesearch import search
