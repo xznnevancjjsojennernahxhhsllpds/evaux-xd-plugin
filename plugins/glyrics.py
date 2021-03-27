@@ -84,7 +84,7 @@ async def lyrics(message: Message):
             },
             data=json.dumps(data),
         ) as result:
-        lyr = await result.text()
+            lyr = await result.text()
         if len(lyr) <= 4096:
             await message.edit(lyr)
         else:
