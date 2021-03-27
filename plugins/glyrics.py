@@ -84,15 +84,19 @@ async def lyrics(message: Message):
             },
             data=json.dumps(data),
         ) as result:
-            lyrics = await result.text()
-        lyr = json.loads(lyrics)
+            lyric = await result.text()
+        lyr = json.loads(lyric)
         lyr = lyr["lyrics"]
-        full_lyr = f"Lyrics for **{title}** by Genius.com...\n\n{lyr}"
+        lyrics = f"\n{lyr}"
+        lyrics += f"\n\n<b>Written by:</b> <code>{writers}</code>"
+        lyrics += f"\n<b>Source:</b> <code>genius.com</code>"
+        lyrics = lyrics.replace("[", "<b>[").replace("]", "]</b>")
+        full_lyr = f"Lyrics for **{title}** by Genius.com...\n\n{lyrics}"
         if len(full_lyr) <= 4096:
             await message.edit(full_lyr)
         else:
-            lyr = lyr.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
-            link = post_to_telegraph(f"Lyrics for {title}...", lyr)
+            lyrics = lyrics.replace("\n", "<br>")
+            link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
             await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
         return
     if lyr is None:
