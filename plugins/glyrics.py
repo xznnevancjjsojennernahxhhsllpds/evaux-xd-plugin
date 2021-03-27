@@ -85,7 +85,7 @@ async def lyrics(message: Message):
             data=json.dumps(data),
         ) as result:
             lyrics = await result.text()
-        lyr = json.load(lyrics)
+        lyr = json.loads(lyrics)
         lyr = lyr["lyrics"]
         full_lyr = f"Lyrics for **{title}** by Genius.com...\n\n{lyr}"
         if len(full_lyr) <= 4096:
