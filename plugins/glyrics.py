@@ -84,10 +84,14 @@ async def lyrics(message: Message):
             },
             data=json.dumps(data),
         ) as result:
-            lyr = await result.text()
-        if len(lyr) <= 4096:
-            await message.edit(lyr)
+            lyrics = await result.text()
+        lyr = json.load(lyrics)
+        lyr = lyr["lyrics"]
+        full_lyr = f"Lyrics for **{title}** by Genius.com...\n\n{lyr}"
+        if len(full_lyr) <= 4096:
+            await message.edit(full_lyr)
         else:
+            lyr = lyr.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
             link = post_to_telegraph(f"Lyrics for {title}...", lyr)
             await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
         return
