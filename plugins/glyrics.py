@@ -72,13 +72,20 @@ async def lyrics(message: Message):
     try:
         lyr = genius.search_song(song, artist)
     except Exception:
-        headers = {
-            'content-type': 'application/json',
-        }
-        data = '{"searchTerm": "higher - eminem"}'
-        resp = requests.post('http://www.glyrics.xyz/search', headers=headers, data=data)
-        resp = resp.text
-#        resp = resp.replace("\n", "<br>").replace("[", "<b>[").replace("]", "]</b>")
+        import aiohttp
+import json
+
+        b = "channa mereya - arijit singh "
+        k = {"searchTerm": b}
+        async with aiohttp.request(
+            "POST",
+            "http://www.glyrics.xyz/search",
+            headers={
+                "content-type": "application/json",
+            },
+            data=json.dumps(k),
+        ) as k:
+        lyr = await k.text()
         if len(resp) <= 4096:
             await message.edit(response.text)
         else:
