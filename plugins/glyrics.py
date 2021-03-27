@@ -2,6 +2,8 @@
 
 import lyricsgenius
 import requests
+import aiohttp
+import json
 
 from bs4 import BeautifulSoup
 from googlesearch import search
@@ -72,24 +74,21 @@ async def lyrics(message: Message):
     try:
         lyr = genius.search_song(song, artist)
     except Exception:
-        import aiohttp
-import json
-
-        b = "channa mereya - arijit singh "
-        k = {"searchTerm": b}
+        name = f"{song} {artist}"
+        data = {"searchTerm": name}
         async with aiohttp.request(
             "POST",
             "http://www.glyrics.xyz/search",
             headers={
                 "content-type": "application/json",
             },
-            data=json.dumps(k),
-        ) as k:
-        lyr = await k.text()
-        if len(resp) <= 4096:
-            await message.edit(response.text)
+            data=json.dumps(data),
+        ) as result:
+        lyr = await result.text()
+        if len(lyr) <= 4096:
+            await message.edit(lyr)
         else:
-            link = post_to_telegraph(f"Lyrics for {title}...", resp)
+            link = post_to_telegraph(f"Lyrics for {title}...", lyr)
             await message.edit(f"Lyrics for **{title}** by Genius.com...\n[Link]({link})", disable_web_page_preview=True)
         return
     if lyr is None:
