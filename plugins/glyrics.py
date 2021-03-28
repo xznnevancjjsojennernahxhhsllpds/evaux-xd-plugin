@@ -19,12 +19,14 @@ if Config.GENIUS is not None:
     about={
         "header": "Lyrics using Genius API",
         "description": "Song lyrics from Genius.com",
+        "flags": {"-t": "With telegra.ph link..."},
         "usage": "{tr}glyrics [Artist name] - [Song name]",
         "examples": "{tr}glyrics Eminem - Higher",
     },
 )
 async def lyrics(message: Message):
-    song = message.input_str or message.reply_to_message.text
+    song = message.filtered_input_str or message.reply_to_message.text
+    flag = message.flags
     if not song:
         await message.err("Search song lyrics without song name?")
         return
@@ -92,7 +94,7 @@ async def lyrics(message: Message):
         lyrics += f"\n<b>Source:</b> <code>genius.com</code>"
         lyrics = lyrics.replace("[", "<b>[").replace("]", "]</b>")
         full_lyr = f"Lyrics for **{title}** by Genius.com...\n\n{lyrics}"
-        if len(full_lyr) <= 4096:
+        if len(full_lyr) <= 4096 and "-t" not in flag:
             await message.edit(full_lyr)
         else:
             lyrics = lyrics.replace("\n", "<br>")
@@ -109,7 +111,7 @@ async def lyrics(message: Message):
     lyrics = lyrics.replace("[", "<b>[")
     lyrics = lyrics.replace("]", "]</b>")
     lyr_msg = f"Lyrics for <b>{title}</b>...\n\n{lyrics}"
-    if len(lyr_msg) <= 4096:
+    if len(lyr_msg) <= 4096 and "-t" not in flag:
         await message.edit(f"{lyr_msg}")
     else:
         lyrics = lyrics.replace("\n", "<br>") 
