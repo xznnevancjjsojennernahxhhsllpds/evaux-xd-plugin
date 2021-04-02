@@ -31,7 +31,7 @@ from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from userge import Config, Message, pool, userge
 from userge.plugins.bot.utube_inline import BASE_YT_URL, get_yt_video_id, get_ytthumb
-from userge.plugins.misc.upload import check_thumb
+from userge.plugins.misc.uploads import check_thumb
 from userge.plugins.tools.system import restart_ as restart_system
 from userge.plugins.utils.songlink import find_url_from_msg, get_song_link
 from userge.utils import get_response, post_to_telegraph, time_formatter
