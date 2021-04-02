@@ -22,3 +22,5 @@ newspaper3k
 PyDictionary
 pydub
 pyfiglet
+pytgcalls
+ffmpeg-python
