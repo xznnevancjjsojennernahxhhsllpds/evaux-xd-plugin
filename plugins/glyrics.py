@@ -13,6 +13,8 @@ from userge.utils import post_to_telegraph
 
 GENIUS = os.environ.get("GENIUS")
 
+if GENIUS is not None:
+    genius = lyricsgenius.Genius(GENIUS)
 
 @userge.on_cmd(
     "glyrics",
@@ -25,16 +27,13 @@ GENIUS = os.environ.get("GENIUS")
     },
 )
 async def lyrics(message: Message):
-    try:
-        genius = lyricsgenius.Genius(GENIUS)
-    except:
-        await message.edit("Add <code>GENIUS</code> in vars from docs.genius.com...", del_in=5)
+    """Lyrics from genius.com"""
     song = message.filtered_input_str or message.reply_to_message.text
     flag = message.flags
     if not song:
         await message.err("Search song lyrics without song name?")
         return
-    if Config.GENIUS is None:
+    if GENIUS is None:
         await message.err("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
         return
     
