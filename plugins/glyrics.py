@@ -11,7 +11,7 @@ from googlesearch import search
 from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
 
-GENIUS = os.environ.get("GENIUS", None)
+GENIUS = os.environ.get("GENIUS")
 
 
 @userge.on_cmd(
