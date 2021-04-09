@@ -25,8 +25,10 @@ GENIUS = os.environ.get("GENIUS")
     },
 )
 async def lyrics(message: Message):
-    if Config.GENIUS is not None:
+    try:
         genius = lyricsgenius.Genius(Config.GENIUS)
+    except:
+        await message.edit("Add <code>GENIUS</code> in vars from docs.genius.com...", del_in=5)
     song = message.filtered_input_str or message.reply_to_message.text
     flag = message.flags
     if not song:
