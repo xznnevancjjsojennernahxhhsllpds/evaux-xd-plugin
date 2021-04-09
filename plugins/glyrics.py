@@ -11,7 +11,7 @@ from googlesearch import search
 from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
 
-GENIUS = os.environ.get("GENIUS")
+GENIUS = os.environ.get("GENIUS", None)
 
 if Config.GENIUS is not None:
     genius = lyricsgenius.Genius(Config.GENIUS)
