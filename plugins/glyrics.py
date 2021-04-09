@@ -13,9 +13,6 @@ from userge.utils import post_to_telegraph
 
 GENIUS = os.environ.get("GENIUS", None)
 
-if Config.GENIUS is not None:
-    genius = lyricsgenius.Genius(Config.GENIUS)
-
 
 @userge.on_cmd(
     "glyrics",
@@ -28,6 +25,8 @@ if Config.GENIUS is not None:
     },
 )
 async def lyrics(message: Message):
+    if Config.GENIUS is not None:
+        genius = lyricsgenius.Genius(Config.GENIUS)
     song = message.filtered_input_str or message.reply_to_message.text
     flag = message.flags
     if not song:
