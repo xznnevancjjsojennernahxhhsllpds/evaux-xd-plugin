@@ -4,11 +4,14 @@ import lyricsgenius
 import requests
 import aiohttp
 import json
+import os
 
 from bs4 import BeautifulSoup
 from googlesearch import search
 from userge import Message, userge, Config
 from userge.utils import post_to_telegraph
+
+GENIUS = os.environ.get("GENIUS")
 
 if Config.GENIUS is not None:
     genius = lyricsgenius.Genius(Config.GENIUS)
