@@ -21,7 +21,10 @@ if GENIUS is not None:
     about={
         "header": "Lyrics using Genius API",
         "description": "Song lyrics from Genius.com",
-        "flags": {"-t": "With telegra.ph link..."},
+        "flags": {
+            "-t": "With telegra.ph link...",
+            "-s": "Search song names...",
+        },
         "usage": "{tr}glyrics [Artist name] - [Song name]",
         "examples": "{tr}glyrics Eminem - Higher",
     },
@@ -31,11 +34,27 @@ async def lyrics(message: Message):
     song = message.filtered_input_str or message.reply_to_message.text
     flag = message.flags
     if not song:
-        await message.err("Search song lyrics without song name?")
+        await message.err("Search song lyrics without song name?", del_in=5)
         return
     if GENIUS is None:
-        await message.err("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com")
+        await message.err("Provide 'Genius access token' as `GENIUS` to config vars...\nGet it from docs.genius.com...", del_in=5)
         return
+    if len(flag) > 1:
+        await message.edit("Only one flag at a time please...", del_in=5)
+        return
+    if "-s" in flag:
+        songs = genius.search_songs(song)
+        number = 0
+        list = []
+        hits = songs["hits"]
+        for one in hits:
+            list.append(f'◾️ <code>{hits[number]["result"]["full_title"]}</code>')
+            number += 1
+        list = "\n".join(list)
+        await message.edit(
+            f"Songs matching <b>{song}</b>:\n\n"
+            f"{list}"
+        )
     
     to_search = song + "genius lyrics"
     gen_surl = list(search(to_search, num=1, stop=1))[0]
