@@ -44,6 +44,7 @@ async def lyrics(message: Message):
         return
     if "-s" in flag:
         songs = genius.search_songs(song)
+        await message.edit(f"Searching songs matching <b>{song}</b>...")
         number = 0
         list = []
         hits = songs["hits"]
@@ -52,9 +53,10 @@ async def lyrics(message: Message):
             number += 1
         list = "\n".join(list)
         await message.edit(
-            f"Songs matching <b>{song}</b>:\n\n"
+            f"Songs matching [<b>{song}</b>]:\n\n"
             f"{list}"
         )
+        return
     
     to_search = song + "genius lyrics"
     gen_surl = list(search(to_search, num=1, stop=1))[0]
