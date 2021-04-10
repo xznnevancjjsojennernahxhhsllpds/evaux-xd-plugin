@@ -46,15 +46,15 @@ async def lyrics(message: Message):
         songs = genius.search_songs(song)
         await message.edit(f"Searching songs matching <b>{song}</b>...")
         number = 0
-        list = []
+        s_list = []
         hits = songs["hits"]
         for one in hits:
-            list.append(f'◾️ <code>{hits[number]["result"]["full_title"]}</code>')
+            s_list.append(f'◾️ <code>{hits[number]["result"]["full_title"]}</code>')
             number += 1
-        list = "\n".join(list)
+        s_list = "\n".join(s_list)
         await message.edit(
             f"Songs matching [<b>{song}</b>]:\n\n"
-            f"{list}"
+            f"{s_list}"
         )
         return
     
