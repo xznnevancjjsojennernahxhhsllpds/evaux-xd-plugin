@@ -123,7 +123,7 @@ async def lyrics(message: Message):
         else:
             lyrics = lyrics.replace("\n", "<br>")
             link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
-            await message.edit(f"Lyrics for <b><a href='{link}'>{title}</a></b> by Genius.com...", disable_web_page_preview=True)
+            await message.edit(f"Lyrics for <b><a href='{link}'>{title}</a></b> by Genius.com...")
         return
     if lyr is None:
         await message.edit(f"Couldn't find `{title}` on Genius...")
@@ -140,4 +140,4 @@ async def lyrics(message: Message):
     else:
         lyrics = lyrics.replace("\n", "<br>") 
         link = post_to_telegraph(f"Lyrics for {title}...", lyrics)
-        await message.edit(f"Lyrics for <b><a href='{link}'>{title}</a></b> by Genius.com...", disable_web_page_preview=True)
+        await message.edit(f"Lyrics for <b><a href='{link}'>{title}</a></b> by Genius.com...")
