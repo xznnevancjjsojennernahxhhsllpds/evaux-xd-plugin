@@ -1,64 +1,64 @@
 import os
 import re
 
-import requests
+from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 from googlesearch import search
-from userge import Message, userge
-from userge.utils import post_to_telegraph 
+
+from userge import userge, Message, pool
 
 
-@userge.on_cmd(
-    "lyrics",
-    about={
-        "header": "Genius Lyrics",
-        "description": "Scrape Song Lyrics from Genius.com",
-        "usage": "{tr}lyrics [Song Name]",
-        "examples": "{tr}lyrics Swalla Nicki Minaj",
-    },
-)
-async def lyrics(message: Message):
+@userge.on_cmd("glyrics", about={
+    'header': "Genius Lyrics",
+    'description': "Scrape Song Lyrics from Genius.com",
+    'usage': "{tr}glyrics [Song Name]",
+    'examples': "{tr}glyrics Swalla Nicki Minaj"})
+async def glyrics(message: Message):
     song = message.input_str
     if not song:
         await message.edit("Bruh WTF?")
         return
-    await message.edit(f"Searching lyrics for **{song}**...")
+    await message.edit(f"__Searching Lyrics For {song}__")
     to_search = song + "genius lyrics"
     gen_surl = list(search(to_search, num=1, stop=1))[0]
-    gen_page = requests.get(gen_surl)
-    scp = BeautifulSoup(gen_page.text, "html.parser")
-    lyrics = scp.find("div", class_="lyrics")
+    async with ClientSession() as ses, ses.get(gen_surl) as res:
+        gen_page = await res.text()
+    scp = BeautifulSoup(gen_page, 'html.parser')
+    lyrics = await get_lyrics(scp)
     if not lyrics:
         await message.edit(f"No Results Found for: `{song}`")
         return
-    lyrics = lyrics.get_text()
-    lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
+    lyrics = re.sub(r'[\(\[].*?[\)\]]', '', lyrics)
     lyrics = os.linesep.join((s for s in lyrics.splitlines() if s))
-    title = scp.find("title").get_text().split("|")
-    writers_box = [
-        writer
-        for writer in scp.find_all("span", {"class": "metadata_unit-label"})
-        if writer.text == "Written By"
-    ]
-    if writers_box:
-        target_node = writers_box[0].find_next_sibling(
-            "span", {"class": "metadata_unit-info"}
-        )
-        writers = target_node.text.strip()
-    else:
-        writers = "UNKNOWN"
-    lyr_format = ""
-    lyr_format += "<b>" + title[0] + "</b>\n"
-    lyr_format += "<i>" + lyrics + "</i>"
-    lyr_format += "\n\n<b>Written By: </b>" + "<i>" + writers + "</i>"
-    lyr_format += "\n<b>Source: </b>" + "`" + title[1] + "`"
+    title = scp.find('title').get_text().split("|")
+    writers = await get_writers(scp) or "UNKNOWN"
+    lyr_format = ''
+    lyr_format += '**' + title[0] + '**\n\n'
+    lyr_format += '__' + lyrics + '__'
+    lyr_format += "\n\n**Written By: **" + '__' + writers + '__'
+    lyr_format += "\n**Source: **" + '`' + title[1] + '`'
 
     if lyr_format:
-        if len(lyr_format) <= 4096:
-            await message.edit(lyr_format)
-        else:
-            lyr_format = lyr_format.replace("\n", "<br>")
-            link = post_to_telegraph(title[0], lyr_format)
-            await message.edit(f"Posted the lyrics to telegraph...\n[Link]({link})")
+        await message.edit(lyr_format)
     else:
         await message.edit(f"No Lyrics Found for **{song}**")
+
+
+# Added seperate scraping functions to change logic easily in future...
+@pool.run_in_thread
+def get_lyrics(bs):
+    lyrics = bs.find_all("div", class_="eOLwDW")
+    if not lyrics:
+        return None
+    for lyric in lyrics:
+        for br in lyric.find_all("br"):
+            br.replace_with("\n")
+    return "\n".join([x.text for x in lyrics])
+
+
+@pool.run_in_thread
+def get_writers(bs):
+    writers = bs.find("div", class_="fognin")
+    if writers.contents[0].extract().text == "Written By":
+        return writers.text
+    return None
