@@ -13,6 +13,7 @@ justwatch
 lyricsgenius>=3.0.0
 lottie
 qrcode
+saavn
 spotdl
 tracemoepy==3.8
 validators
