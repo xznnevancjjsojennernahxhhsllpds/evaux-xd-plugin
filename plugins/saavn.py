@@ -8,7 +8,7 @@ from telethon.tl.types import DocumentAttributeAudio
 from . import *
 
 
-@ultroid_cmd(
+@userge.on_cmd(
     pattern="saavn ?(.*)",
 )
 async def siesace(e):
