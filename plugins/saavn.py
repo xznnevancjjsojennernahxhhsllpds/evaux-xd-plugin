@@ -1,9 +1,12 @@
 import os
-import time
-from urllib.request import urlretrieve
+import re
+import shutil
+from pathlib import Path
 
-import requests as r
-from telethon.tl.types import DocumentAttributeAudio
+import deezloader  # pylint: disable=W0406
+from deezloader.exceptions import NoDataApi
+from userge import Message, pool, userge
+from userge.plugins.misc.uploads import audio_upload, doc_upload
 
 from . import *
 
