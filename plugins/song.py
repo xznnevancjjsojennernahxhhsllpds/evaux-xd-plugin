@@ -3,7 +3,6 @@ import os
 import random
 import time
 
-from lyrics_extractor import SongLyrics as sl
 from telethon.errors.rpcerrorlist import UserAlreadyParticipantError
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from telethon.tl.types import DocumentAttributeAudio
