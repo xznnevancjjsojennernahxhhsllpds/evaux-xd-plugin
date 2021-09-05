@@ -4,7 +4,6 @@ import random
 import time
 
 from lyrics_extractor import SongLyrics as sl
-from lyrics_extractor.lyrics import LyricScraperException as LyError
 from telethon.errors.rpcerrorlist import UserAlreadyParticipantError
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from telethon.tl.types import DocumentAttributeAudio
